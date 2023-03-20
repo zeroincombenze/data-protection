@@ -8,9 +8,8 @@ from odoo import models
 class MailMail(models.Model):
     _inherit = "mail.mail"
 
-    def _postprocess_sent_message(
-        self, success_pids, failure_reason=False, failure_type=None
-    ):
+    def _postprocess_sent_message(self, success_pids, failure_reason=False,
+                                  failure_type=None):
         """Write consent status after sending message."""
         # Know if mail was successfully sent to a privacy consent
         res_ids = []
@@ -24,14 +23,14 @@ class MailMail(models.Model):
             ):
                 res_ids.append(mail.mail_message_id.res_id)
         if res_ids:
-            consents = self.env["privacy.consent"].search(
-                [
-                    ("id", "in", res_ids),
-                    ("state", "=", "draft"),
-                    ("partner_id", "in", [par.id for par in success_pids]),
-                ]
-            )
-            consents.write({"state": "sent"})
+            consents = self.env["privacy.consent"].search([
+                ("id", "in", res_ids),
+                ("state", "=", "draft"),
+                ("partner_id", "in", [par.id for par in success_pids])
+            ])
+            consents.write({
+                "state": "sent",
+            })
         return super()._postprocess_sent_message(
             success_pids=success_pids,
             failure_reason=failure_reason,
@@ -47,12 +46,14 @@ class MailMail(models.Model):
         which would enable any reader of such thread to impersonate the
         subject and choose in its behalf.
         """
-        result = super()._send_prepare_body()
+        result = super(MailMail, self)._send_prepare_body()
         # Avoid polluting other model mails
         if self.model != "privacy.consent":
             return result
         # Tokenize consent links
-        consent = self.env["privacy.consent"].browse(self.mail_message_id.res_id)
+        consent = self.env["privacy.consent"] \
+            .browse(self.mail_message_id.res_id) \
+            .with_prefetch(self._prefetch)
         result = result.replace(
             "/privacy/consent/accept/",
             consent._url(True),

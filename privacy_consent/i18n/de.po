@@ -54,19 +54,19 @@ msgid ""
 "                                    <i>${object.activity_id.controller_id."
 "display_name|safe}</i>\n"
 "                                </p>\n"
-"                                ${object.activity_id.description or \"\"}\n"
+"                                ${object.description or \"\"}\n"
 "                                <p>\n"
 "                                    % if object.state == \"answered\":\n"
 "                                        The last time you answered, you\n"
-"                                    % else:\n"
+"                                    % elif object.state == \"sent\":\n"
 "                                        If you do nothing, we will assume "
 "you have\n"
 "                                    % endif\n"
 "\n"
 "                                    % if object.accepted:\n"
-"                                    <b>accepted</b>\n"
+"                                        <b>accepted</b>\n"
 "                                    % else:\n"
-"                                    <b>rejected</b>\n"
+"                                        <b>rejected</b>\n"
 "                                    % endif\n"
 "                                    such data processing.\n"
 "                                </p>\n"
@@ -169,12 +169,11 @@ msgid "Activity"
 msgstr "Aktivität"
 
 #. module: privacy_consent
-#: model:ir.model.fields.selection,name:privacy_consent.selection__privacy_consent__state__answered
+#: selection:privacy.consent,state:0
 msgid "Answered"
 msgstr "Beantwortet"
 
 #. module: privacy_consent
-#: model_terms:ir.ui.view,arch_db:privacy_consent.consent_form
 #: model_terms:ir.ui.view,arch_db:privacy_consent.consent_search
 msgid "Archived"
 msgstr "Archiviert"
@@ -195,12 +194,12 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: privacy_consent
-#: model:ir.model.fields.selection,name:privacy_consent.selection__privacy_activity__consent_required__auto
+#: selection:privacy.activity,consent_required:0
 msgid "Automatically"
 msgstr "Automatisch"
 
 #. module: privacy_consent
-#: model:ir.model.fields.selection,name:privacy_consent.selection__privacy_consent__state__sent
+#: selection:privacy.consent,state:0
 msgid "Awaiting response"
 msgstr "Warten auf Antwort"
 
@@ -268,21 +267,17 @@ msgid ""
 msgstr "Bitte um Erteilung der Einwilligung zur Datenverarbeitung:"
 
 #. module: privacy_consent
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_mail__display_name
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_template__display_name
-#: model:ir.model.fields,field_description:privacy_consent.field_privacy_activity__display_name
 #: model:ir.model.fields,field_description:privacy_consent.field_privacy_consent__display_name
-#: model:ir.model.fields,field_description:privacy_consent.field_res_partner__display_name
 msgid "Display Name"
 msgstr "Anzeigename"
 
 #. module: privacy_consent
-#: model:ir.model.fields.selection,name:privacy_consent.selection__privacy_consent__state__draft
+#: selection:privacy.consent,state:0
 msgid "Draft"
 msgstr "Entwurf"
 
 #. module: privacy_consent
-#: model:ir.model.constraint,message:privacy_consent.constraint_privacy_consent_unique_partner_activity
+#: sql_constraint:privacy.consent:0
 msgid "Duplicated partner in this data processing activity"
 msgstr "Doppelter Partner in dieser Verarbeitungsaktivität"
 
@@ -341,7 +336,7 @@ msgid "Generate missing draft consent requests"
 msgstr "Fehlende Entwürfe von Einwilligungsanfragen erstellen"
 
 #. module: privacy_consent
-#: code:addons/privacy_consent/models/privacy_activity.py:0
+#: code:addons/privacy_consent/models/privacy_activity.py:139
 #, python-format
 msgid "Generated consents"
 msgstr ""
@@ -367,23 +362,22 @@ msgid "I <b>reject</b> this processing of my data"
 msgstr "Ich <b>lehne</b> die Verarbeitung meiner Daten ab"
 
 #. module: privacy_consent
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_mail__id
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_template__id
-#: model:ir.model.fields,field_description:privacy_consent.field_privacy_activity__id
 #: model:ir.model.fields,field_description:privacy_consent.field_privacy_consent__id
-#: model:ir.model.fields,field_description:privacy_consent.field_res_partner__id
 msgid "ID"
 msgstr "Ausweis"
 
 #. module: privacy_consent
-#: model:ir.model.fields,help:privacy_consent.field_privacy_consent__message_needaction
 #: model:ir.model.fields,help:privacy_consent.field_privacy_consent__message_unread
+msgid "If checked new messages require your attention."
+msgstr ""
+
+#. module: privacy_consent
+#: model:ir.model.fields,help:privacy_consent.field_privacy_consent__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr ""
 
 #. module: privacy_consent
 #: model:ir.model.fields,help:privacy_consent.field_privacy_consent__message_has_error
-#: model:ir.model.fields,help:privacy_consent.field_privacy_consent__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -415,11 +409,7 @@ msgid "Last Metadata"
 msgstr "Letzte Metadaten"
 
 #. module: privacy_consent
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_mail____last_update
-#: model:ir.model.fields,field_description:privacy_consent.field_mail_template____last_update
-#: model:ir.model.fields,field_description:privacy_consent.field_privacy_activity____last_update
 #: model:ir.model.fields,field_description:privacy_consent.field_privacy_consent____last_update
-#: model:ir.model.fields,field_description:privacy_consent.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr "Letzte Änderung am"
 
@@ -439,7 +429,7 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: privacy_consent
-#: model:ir.model.fields.selection,name:privacy_consent.selection__privacy_activity__consent_required__manual
+#: selection:privacy.activity,consent_required:0
 msgid "Manually"
 msgstr "Manuell"
 
@@ -459,7 +449,7 @@ msgid "Metadata from the last acceptance or rejection by the subject"
 msgstr "Metadaten aus der letzten Annahme oder Ablehnung durch den Betroffenen"
 
 #. module: privacy_consent
-#: code:addons/privacy_consent/models/mail_template.py:0
+#: code:addons/privacy_consent/models/mail_template.py:24
 #, python-format
 msgid ""
 "Missing privacy consent link placeholders. You need at least these two "
@@ -481,7 +471,7 @@ msgstr ""
 
 #. module: privacy_consent
 #: model:ir.model.fields,field_description:privacy_consent.field_privacy_consent__message_has_error_counter
-msgid "Number of errors"
+msgid "Number of error"
 msgstr ""
 
 #. module: privacy_consent
@@ -543,7 +533,7 @@ msgid "Request automatic data processing consents"
 msgstr ""
 
 #. module: privacy_consent
-#: code:addons/privacy_consent/models/privacy_activity.py:0
+#: code:addons/privacy_consent/models/privacy_activity.py:99
 #, python-format
 msgid "Require consent is available only for subjects in current database."
 msgstr ""
@@ -553,11 +543,6 @@ msgstr ""
 msgid ""
 "Run this action when a new consent request is created or its acceptance "
 "status is updated."
-msgstr ""
-
-#. module: privacy_consent
-#: model:ir.model.fields,field_description:privacy_consent.field_privacy_consent__message_has_sms_error
-msgid "SMS Delivery error"
 msgstr ""
 
 #. module: privacy_consent
@@ -576,7 +561,7 @@ msgid "Sincerely,<br/>"
 msgstr "Mit freundlichen Grüßen<br/>"
 
 #. module: privacy_consent
-#: code:addons/privacy_consent/models/privacy_activity.py:0
+#: code:addons/privacy_consent/models/privacy_activity.py:91
 #, python-format
 msgid "Specify a mail template to ask automated consent."
 msgstr ""
@@ -662,3 +647,6 @@ msgid "You have <b class=\"text-success\">accepted</b> such processing."
 msgstr ""
 "Du hast dieser Verarbeitungstätigkeit <b class=\"text-success\">zugestimmt</"
 "b>."
+
+#~ msgid "Partner"
+#~ msgstr "Partner"

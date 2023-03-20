@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class PrivacyActivity(models.Model):
     _name = "privacy.activity"
     _description = "Data processing activities"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     active = fields.Boolean(
         default=True,
@@ -19,28 +19,29 @@ class PrivacyActivity(models.Model):
         translate=True,
     )
     description = fields.Html(
-        translate=True, help="How is personal data used here? Why? Etc."
+        translate=True,
+        help="How is personal data used here? Why? Etc."
     )
     controller_id = fields.Many2one(
-        comodel_name="res.partner",
+        "res.partner",
         string="Controller",
         required=True,
         default=lambda self: self._default_controller_id(),
         help="Whoever determines the purposes and means of the processing "
-        "of personal data.",
+             "of personal data.",
     )
     processor_ids = fields.Many2many(
-        comodel_name="res.partner",
-        relation="privacy_activity_res_partner_processor_ids",
+        "res.partner",
+        "privacy_activity_res_partner_processor_ids",
         string="Processors",
         help="Whoever processes personal data on behalf of the controller.",
     )
     subject_find = fields.Boolean(
-        string="Define subjects",
+        "Define subjects",
         help="Are affected subjects present in this database?",
     )
     subject_domain = fields.Char(
-        string="Subjects filter",
+        "Subjects filter",
         default="[]",
         help="Selection filter to find specific subjects included.",
     )

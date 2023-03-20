@@ -3,16 +3,18 @@
 {
     "name": "Privacy - Consent",
     "summary": "Allow people to explicitly accept or reject inclusion "
-    "in some activity, GDPR compliant",
-    "version": "14.0.1.1.0",
+               "in some activity, GDPR compliant",
+    "version": "12.0.1.1.2",
     "development_status": "Production/Stable",
     "category": "Privacy",
-    "website": "https://github.com/OCA/data-protection",
+    "website": "https://github.com/OCA/management-activity",
     "author": "Tecnativa, initOS GmbH, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "application": False,
     "installable": True,
-    "depends": ["privacy"],
+    "depends": [
+        "privacy",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "data/ir_actions_server.xml",
